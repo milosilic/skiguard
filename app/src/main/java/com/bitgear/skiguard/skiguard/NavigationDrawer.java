@@ -90,6 +90,8 @@ public class NavigationDrawer extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_rate_us) {
 
