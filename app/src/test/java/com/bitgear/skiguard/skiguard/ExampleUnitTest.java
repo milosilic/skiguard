@@ -1,4 +1,4 @@
-package com.bitgear.skigaurd.skiguard;
+package com.bitgear.skiguard.skiguard;
 
 import org.junit.Test;
 

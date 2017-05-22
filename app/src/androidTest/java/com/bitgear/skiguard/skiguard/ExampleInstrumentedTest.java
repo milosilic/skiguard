@@ -1,4 +1,4 @@
-package com.bitgear.skigaurd.skiguard;
+package com.bitgear.skiguard.skiguard;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.bitgear.skigaurd.skiguard", appContext.getPackageName());
+        assertEquals("com.bitgear.skiguard.skiguard", appContext.getPackageName());
     }
 }
