@@ -23,7 +23,7 @@ public class User {
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    @Generated
+    @Generated(hash = 586692638)
     public User() {
     }
 
@@ -31,7 +31,7 @@ public class User {
         this.id = id;
     }
 
-    @Generated
+    @Generated(hash = 1429819962)
     public User(Long id, int user_id, String last_name, String first_name, String email) {
         this.id = id;
         this.user_id = user_id;
@@ -81,6 +81,43 @@ public class User {
     }
 
     // KEEP METHODS - put your custom methods here
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", user_id=" + user_id +
+                ", last_name='" + last_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (getUser_id() != user.getUser_id()) return false;
+        if (getLast_name() != null ? !getLast_name().equals(user.getLast_name()) : user.getLast_name() != null)
+            return false;
+        if (getFirst_name() != null ? !getFirst_name().equals(user.getFirst_name()) : user.getFirst_name() != null)
+            return false;
+        return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUser_id();
+        result = 31 * result + (getLast_name() != null ? getLast_name().hashCode() : 0);
+        result = 31 * result + (getFirst_name() != null ? getFirst_name().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        return result;
+    }
+
     // KEEP METHODS END
 
 }

@@ -3,9 +3,8 @@ package com.bitgear.skiguard.skiguard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+
+import com.bitgear.skiguard.dao.DaoMaster;
+import com.bitgear.skiguard.dao.DaoSession;
+import com.bitgear.skiguard.dao.User;
+import com.bitgear.skiguard.dao.UserDao;
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.greendao.database.Database;
+
+import java.util.List;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,6 +58,24 @@ public class NavigationDrawer extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setupToolbar();
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
+        Database db = helper.getWritableDb();
+        DaoSession daoSession = new DaoMaster(db).newSession();
+
+
+        insertSampleData(daoSession);
+
+        UserDao userDao = daoSession.getUserDao();
+        List<User> userlist = userDao.loadAll();
+        for (User user:userlist
+
+             ) {
+            Logger.d(user);
+
+        }
+        Logger.d( userlist.size());
+
     }
 
     @Override
@@ -112,6 +140,14 @@ public class NavigationDrawer extends AppCompatActivity
      * implementation in child activities
      */
     public void setupToolbar(){
+
+    }
+
+    public void insertSampleData(DaoSession daoSession) {
+        User user = new User();
+        user.setEmail("John Doe");
+        UserDao personDao = daoSession.getUserDao();
+        personDao.insertOrReplace(user);
 
     }
 }

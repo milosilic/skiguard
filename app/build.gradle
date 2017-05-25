@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao' // apply plugin
+//apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 25
@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.android.support:support-vector-drawable:25.2.0'
     compile 'com.orhanobut:logger:1.15'
-    compile 'org.greenrobot:greendao:3.2.2' // add library
+    compile 'org.greenrobot:greendao:3.2.0' // add library
 
     testCompile 'junit:junit:4.12'
 }
