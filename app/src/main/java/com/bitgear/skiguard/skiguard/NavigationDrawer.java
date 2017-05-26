@@ -15,15 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.bitgear.skiguard.dao.DaoMaster;
 import com.bitgear.skiguard.dao.DaoSession;
-import com.bitgear.skiguard.dao.User;
-import com.bitgear.skiguard.dao.UserDao;
-import com.orhanobut.logger.Logger;
-
-import org.greenrobot.greendao.database.Database;
-
-import java.util.List;
+import com.bitgear.skiguard.dao.Device;
+import com.bitgear.skiguard.dao.DeviceDao;
+import com.bitgear.skiguard.dao.History;
+import com.bitgear.skiguard.dao.HistoryDao;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,24 +53,15 @@ public class NavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
+//        Database db = helper.getWritableDb();
+//        DaoSession daoSession = new DaoMaster(db).newSession();
+//
+//        insertSampleData(daoSession);
+
+
         setupToolbar();
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
-        Database db = helper.getWritableDb();
-        DaoSession daoSession = new DaoMaster(db).newSession();
-
-
-        insertSampleData(daoSession);
-
-        UserDao userDao = daoSession.getUserDao();
-        List<User> userlist = userDao.loadAll();
-        for (User user:userlist
-
-             ) {
-            Logger.d(user);
-
-        }
-        Logger.d( userlist.size());
 
     }
 
@@ -144,10 +131,29 @@ public class NavigationDrawer extends AppCompatActivity
     }
 
     public void insertSampleData(DaoSession daoSession) {
-        User user = new User();
-        user.setEmail("John Doe");
-        UserDao personDao = daoSession.getUserDao();
-        personDao.insertOrReplace(user);
+//        User device = new User();
+//        device.setEmail("John Doe");
+//        UserDao personDao = daoSession.getUserDao();
+//        personDao.insertOrReplace(device);
 
+        History history = new History();
+        history.setBattery(234);
+        history.setId_device(1);
+        history.setId_track(1);
+        history.setId_track_change(123);
+        history.setLat((float) 5);
+        history.setLng((float) 23.32);
+
+        HistoryDao historyDao = daoSession.getHistoryDao();
+        historyDao.insertOrReplace(history);
+
+        Device device = new Device();
+        device.setColor("red");
+        device.setLast_update(history.getId());
+        device.setHistory(history);
+        device.setName("milos Ilic");
+        device.setSerial_number("303403934093409403");
+        DeviceDao deviceDao = daoSession.getDeviceDao();
+        deviceDao.insertOrReplace(device);
     }
 }

@@ -23,7 +23,7 @@ public class User {
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
 
-    @Generated(hash = 586692638)
+    @Generated
     public User() {
     }
 
@@ -31,7 +31,7 @@ public class User {
         this.id = id;
     }
 
-    @Generated(hash = 1429819962)
+    @Generated
     public User(Long id, int user_id, String last_name, String first_name, String email) {
         this.id = id;
         this.user_id = user_id;
@@ -117,7 +117,6 @@ public class User {
         result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         return result;
     }
-
     // KEEP METHODS END
 
 }

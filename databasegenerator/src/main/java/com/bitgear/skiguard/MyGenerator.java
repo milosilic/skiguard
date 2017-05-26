@@ -2,6 +2,7 @@ package com.bitgear.skiguard;
 
 import org.greenrobot.greendao.generator.DaoGenerator;
 import org.greenrobot.greendao.generator.Entity;
+import org.greenrobot.greendao.generator.Property;
 import org.greenrobot.greendao.generator.Schema;
 
 public class MyGenerator {
@@ -20,6 +21,8 @@ public class MyGenerator {
 
     private static void addTables(final Schema schema) {
         addUserEntities(schema);
+        addDeviceEntities(schema);
+
         // addPhonesEntities(schema);
     }
 
@@ -34,6 +37,39 @@ public class MyGenerator {
         return user;
     }
 
+    private static Entity addDeviceEntities(final Schema schema) {
+        Entity history = schema.addEntity("History");
+        history.addIdProperty().primaryKey().autoincrement();
+        history.addIntProperty("id_device").notNull();
+        history.addFloatProperty("lat");
+        history.addFloatProperty("lng");
+        history.addIntProperty("battery");
+        history.addIntProperty("id_track");
+        history.addIntProperty("id_track_change");
+
+        Entity device = schema.addEntity("Device");
+        device.addIdProperty().primaryKey().autoincrement();
+        device.addStringProperty("serial_number");
+        device.addStringProperty("color");
+        device.addStringProperty("name");
+        // add the foreign key "pictureId" to the "user" entity
+        Property pictureIdProperty = device.addLongProperty("last_update").getProperty();
+// set up a to-one relation to the "picture" entity
+        device.addToOne(history, pictureIdProperty);
+
+        return device;
+    }
+//    private static Entity addHistoryEntities(final Schema schema) {
+//        Entity history = schema.addEntity("History");
+//        history.addIdProperty().primaryKey().autoincrement();
+//        history.addIntProperty("id_device").notNull();
+//        history.addFloatProperty("lat");
+//        history.addFloatProperty("lng");
+//        history.addIntProperty("battery");
+//        history.addIntProperty("id_track");
+//        history.addIntProperty("id_track_change");
+//        return history;
+//    }
     //    private static Entity addPhonesEntities(final Schema schema) {
     //        Entity phone = schema.addEntity("Phone");
     //        phone.addIdProperty().primaryKey().autoincrement();
