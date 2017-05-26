@@ -49,9 +49,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DEVICE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"SERIAL_NUMBER\" TEXT," + // 1: serial_number
-                "\"COLOR\" TEXT," + // 2: color
-                "\"NAME\" TEXT," + // 3: name
+                "\"SERIAL_NUMBER\" TEXT NOT NULL ," + // 1: serial_number
+                "\"COLOR\" TEXT NOT NULL ," + // 2: color
+                "\"NAME\" TEXT NOT NULL ," + // 3: name
                 "\"LAST_UPDATE\" INTEGER);"); // 4: last_update
     }
 
@@ -69,21 +69,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
- 
-        String serial_number = entity.getSerial_number();
-        if (serial_number != null) {
-            stmt.bindString(2, serial_number);
-        }
- 
-        String color = entity.getColor();
-        if (color != null) {
-            stmt.bindString(3, color);
-        }
- 
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(4, name);
-        }
+        stmt.bindString(2, entity.getSerial_number());
+        stmt.bindString(3, entity.getColor());
+        stmt.bindString(4, entity.getName());
  
         Long last_update = entity.getLast_update();
         if (last_update != null) {
@@ -99,21 +87,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
- 
-        String serial_number = entity.getSerial_number();
-        if (serial_number != null) {
-            stmt.bindString(2, serial_number);
-        }
- 
-        String color = entity.getColor();
-        if (color != null) {
-            stmt.bindString(3, color);
-        }
- 
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(4, name);
-        }
+        stmt.bindString(2, entity.getSerial_number());
+        stmt.bindString(3, entity.getColor());
+        stmt.bindString(4, entity.getName());
  
         Long last_update = entity.getLast_update();
         if (last_update != null) {
@@ -136,9 +112,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
     public Device readEntity(Cursor cursor, int offset) {
         Device entity = new Device( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // serial_number
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // color
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.getString(offset + 1), // serial_number
+            cursor.getString(offset + 2), // color
+            cursor.getString(offset + 3), // name
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // last_update
         );
         return entity;
@@ -147,9 +123,9 @@ public class DeviceDao extends AbstractDao<Device, Long> {
     @Override
     public void readEntity(Cursor cursor, Device entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setSerial_number(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setColor(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSerial_number(cursor.getString(offset + 1));
+        entity.setColor(cursor.getString(offset + 2));
+        entity.setName(cursor.getString(offset + 3));
         entity.setLast_update(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     

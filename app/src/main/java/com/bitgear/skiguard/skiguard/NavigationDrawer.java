@@ -15,11 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.bitgear.skiguard.dao.DaoMaster;
 import com.bitgear.skiguard.dao.DaoSession;
 import com.bitgear.skiguard.dao.Device;
 import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.dao.History;
 import com.bitgear.skiguard.dao.HistoryDao;
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.greendao.database.Database;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,11 +57,11 @@ public class NavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
-//        Database db = helper.getWritableDb();
-//        DaoSession daoSession = new DaoMaster(db).newSession();
-//
-//        insertSampleData(daoSession);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
+        Database db = helper.getWritableDb();
+        DaoSession daoSession = new DaoMaster(db).newSession();
+
+        insertSampleData(daoSession);
 
 
         setupToolbar();
@@ -145,7 +149,9 @@ public class NavigationDrawer extends AppCompatActivity
         history.setLng((float) 23.32);
 
         HistoryDao historyDao = daoSession.getHistoryDao();
-        historyDao.insertOrReplace(history);
+        long update = historyDao.insertOrReplace(history);
+        Logger.d(update);
+
 
         Device device = new Device();
         device.setColor("red");

@@ -16,11 +16,13 @@ public class History {
     @Id(autoincrement = true)
     private Long id;
     private int id_device;
-    private Float lat;
-    private Float lng;
-    private Integer battery;
-    private Integer id_track;
-    private Integer id_track_change;
+    private float lat;
+    private float lng;
+    private int battery;
+    private int id_track;
+
+    @Unique
+    private int id_track_change;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -34,7 +36,7 @@ public class History {
     }
 
     @Generated
-    public History(Long id, int id_device, Float lat, Float lng, Integer battery, Integer id_track, Integer id_track_change) {
+    public History(Long id, int id_device, float lat, float lng, int battery, int id_track, int id_track_change) {
         this.id = id;
         this.id_device = id_device;
         this.lat = lat;
@@ -60,48 +62,63 @@ public class History {
         this.id_device = id_device;
     }
 
-    public Float getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public void setLat(Float lat) {
+    public void setLat(float lat) {
         this.lat = lat;
     }
 
-    public Float getLng() {
+    public float getLng() {
         return lng;
     }
 
-    public void setLng(Float lng) {
+    public void setLng(float lng) {
         this.lng = lng;
     }
 
-    public Integer getBattery() {
+    public int getBattery() {
         return battery;
     }
 
-    public void setBattery(Integer battery) {
+    public void setBattery(int battery) {
         this.battery = battery;
     }
 
-    public Integer getId_track() {
+    public int getId_track() {
         return id_track;
     }
 
-    public void setId_track(Integer id_track) {
+    public void setId_track(int id_track) {
         this.id_track = id_track;
     }
 
-    public Integer getId_track_change() {
+    public int getId_track_change() {
         return id_track_change;
     }
 
-    public void setId_track_change(Integer id_track_change) {
+    public void setId_track_change(int id_track_change) {
         this.id_track_change = id_track_change;
     }
 
     // KEEP METHODS - put your custom methods here
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        History history = (History) o;
+
+        return getId_track_change() == history.getId_track_change();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId_track_change();
+    }
     // KEEP METHODS END
 
 }

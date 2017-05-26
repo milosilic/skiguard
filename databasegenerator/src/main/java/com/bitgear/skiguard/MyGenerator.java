@@ -41,17 +41,17 @@ public class MyGenerator {
         Entity history = schema.addEntity("History");
         history.addIdProperty().primaryKey().autoincrement();
         history.addIntProperty("id_device").notNull();
-        history.addFloatProperty("lat");
-        history.addFloatProperty("lng");
-        history.addIntProperty("battery");
-        history.addIntProperty("id_track");
-        history.addIntProperty("id_track_change");
+        history.addFloatProperty("lat").notNull();
+        history.addFloatProperty("lng").notNull();
+        history.addIntProperty("battery").notNull();
+        history.addIntProperty("id_track").notNull();
+        history.addIntProperty("id_track_change").notNull().unique();
 
         Entity device = schema.addEntity("Device");
         device.addIdProperty().primaryKey().autoincrement();
-        device.addStringProperty("serial_number");
-        device.addStringProperty("color");
-        device.addStringProperty("name");
+        device.addStringProperty("serial_number").notNull();
+        device.addStringProperty("color").notNull();
+        device.addStringProperty("name").notNull();
         // add the foreign key "pictureId" to the "user" entity
         Property pictureIdProperty = device.addLongProperty("last_update").getProperty();
 // set up a to-one relation to the "picture" entity

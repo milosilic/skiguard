@@ -43,7 +43,7 @@ public class DeviceListAdapter extends BaseAdapter {
         List<Device> userlist = deviceDao.loadAll();
         for (Device device:userlist)
         {
-            mCatNames.add(device.getId() + " " + device.getName() + " " +  device.getHistory().getLat() );
+            mCatNames.add(device.getId() + " " + device.getName() + " " +  device.getHistory().getLat() + " " +  device.getHistory().getId_track_change());
             Logger.d(device);
 
         }

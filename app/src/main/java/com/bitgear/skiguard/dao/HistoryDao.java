@@ -24,11 +24,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Id_device = new Property(1, int.class, "id_device", false, "ID_DEVICE");
-        public final static Property Lat = new Property(2, Float.class, "lat", false, "LAT");
-        public final static Property Lng = new Property(3, Float.class, "lng", false, "LNG");
-        public final static Property Battery = new Property(4, Integer.class, "battery", false, "BATTERY");
-        public final static Property Id_track = new Property(5, Integer.class, "id_track", false, "ID_TRACK");
-        public final static Property Id_track_change = new Property(6, Integer.class, "id_track_change", false, "ID_TRACK_CHANGE");
+        public final static Property Lat = new Property(2, float.class, "lat", false, "LAT");
+        public final static Property Lng = new Property(3, float.class, "lng", false, "LNG");
+        public final static Property Battery = new Property(4, int.class, "battery", false, "BATTERY");
+        public final static Property Id_track = new Property(5, int.class, "id_track", false, "ID_TRACK");
+        public final static Property Id_track_change = new Property(6, int.class, "id_track_change", false, "ID_TRACK_CHANGE");
     }
 
 
@@ -46,11 +46,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"HISTORY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"ID_DEVICE\" INTEGER NOT NULL ," + // 1: id_device
-                "\"LAT\" REAL," + // 2: lat
-                "\"LNG\" REAL," + // 3: lng
-                "\"BATTERY\" INTEGER," + // 4: battery
-                "\"ID_TRACK\" INTEGER," + // 5: id_track
-                "\"ID_TRACK_CHANGE\" INTEGER);"); // 6: id_track_change
+                "\"LAT\" REAL NOT NULL ," + // 2: lat
+                "\"LNG\" REAL NOT NULL ," + // 3: lng
+                "\"BATTERY\" INTEGER NOT NULL ," + // 4: battery
+                "\"ID_TRACK\" INTEGER NOT NULL ," + // 5: id_track
+                "\"ID_TRACK_CHANGE\" INTEGER NOT NULL UNIQUE );"); // 6: id_track_change
     }
 
     /** Drops the underlying database table. */
@@ -68,31 +68,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getId_device());
- 
-        Float lat = entity.getLat();
-        if (lat != null) {
-            stmt.bindDouble(3, lat);
-        }
- 
-        Float lng = entity.getLng();
-        if (lng != null) {
-            stmt.bindDouble(4, lng);
-        }
- 
-        Integer battery = entity.getBattery();
-        if (battery != null) {
-            stmt.bindLong(5, battery);
-        }
- 
-        Integer id_track = entity.getId_track();
-        if (id_track != null) {
-            stmt.bindLong(6, id_track);
-        }
- 
-        Integer id_track_change = entity.getId_track_change();
-        if (id_track_change != null) {
-            stmt.bindLong(7, id_track_change);
-        }
+        stmt.bindDouble(3, entity.getLat());
+        stmt.bindDouble(4, entity.getLng());
+        stmt.bindLong(5, entity.getBattery());
+        stmt.bindLong(6, entity.getId_track());
+        stmt.bindLong(7, entity.getId_track_change());
     }
 
     @Override
@@ -104,31 +84,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getId_device());
- 
-        Float lat = entity.getLat();
-        if (lat != null) {
-            stmt.bindDouble(3, lat);
-        }
- 
-        Float lng = entity.getLng();
-        if (lng != null) {
-            stmt.bindDouble(4, lng);
-        }
- 
-        Integer battery = entity.getBattery();
-        if (battery != null) {
-            stmt.bindLong(5, battery);
-        }
- 
-        Integer id_track = entity.getId_track();
-        if (id_track != null) {
-            stmt.bindLong(6, id_track);
-        }
- 
-        Integer id_track_change = entity.getId_track_change();
-        if (id_track_change != null) {
-            stmt.bindLong(7, id_track_change);
-        }
+        stmt.bindDouble(3, entity.getLat());
+        stmt.bindDouble(4, entity.getLng());
+        stmt.bindLong(5, entity.getBattery());
+        stmt.bindLong(6, entity.getId_track());
+        stmt.bindLong(7, entity.getId_track_change());
     }
 
     @Override
@@ -141,11 +101,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
         History entity = new History( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getInt(offset + 1), // id_device
-            cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2), // lat
-            cursor.isNull(offset + 3) ? null : cursor.getFloat(offset + 3), // lng
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // battery
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // id_track
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6) // id_track_change
+            cursor.getFloat(offset + 2), // lat
+            cursor.getFloat(offset + 3), // lng
+            cursor.getInt(offset + 4), // battery
+            cursor.getInt(offset + 5), // id_track
+            cursor.getInt(offset + 6) // id_track_change
         );
         return entity;
     }
@@ -154,11 +114,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
     public void readEntity(Cursor cursor, History entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setId_device(cursor.getInt(offset + 1));
-        entity.setLat(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
-        entity.setLng(cursor.isNull(offset + 3) ? null : cursor.getFloat(offset + 3));
-        entity.setBattery(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setId_track(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setId_track_change(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setLat(cursor.getFloat(offset + 2));
+        entity.setLng(cursor.getFloat(offset + 3));
+        entity.setBattery(cursor.getInt(offset + 4));
+        entity.setId_track(cursor.getInt(offset + 5));
+        entity.setId_track_change(cursor.getInt(offset + 6));
      }
     
     @Override
