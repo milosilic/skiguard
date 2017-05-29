@@ -7,14 +7,62 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bitgear.skiguard.skiguard.DeviceDetailsActivity"
     tools:showIn="@layout/activity_device_details">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="395dp"
+        android:layout_height="587dp"
+        android:padding="3dp"
+        android:background="@color/colorPrimaryDark"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+    <ImageView
+        android:id="@+id/eventIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        app:srcCompat="@android:drawable/sym_def_app_icon"/>
 
     <TextView
-        android:id="@+id/deviceName"
-        android:text="Idemo"
-        android:layout_height="wrap_content"
-        android:layout_width="395dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
+        android:id="@+id/childName"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:text="Ime uredjaja"
+        android:textSize="17sp"
+        android:layout_toEndOf="@+id/eventIcon"
+        android:paddingLeft="3dp"/>
+    <TextView
+        android:id="@+id/eventLocation"
+        android:layout_width="170dp"
+        android:layout_height="20dp"
+        android:textSize="10sp"
+        android:text="Serijijski broj"
+        android:layout_below="@+id/childName"
+        android:gravity="left"
+        android:layout_toRightOf="@+id/eventIcon"
+        android:paddingLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/expiresOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="Expires: 15.12.2017."
+            android:layout_below="@+id/eventIcon"
+            android:gravity="left"
+            android:background="@color/colorAccent"
+            android:paddingLeft="3dp"/>
+
+        <fragment
+            android:id="@+id/eventMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expiresOn"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>

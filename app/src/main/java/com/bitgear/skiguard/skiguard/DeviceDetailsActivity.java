@@ -27,7 +27,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView deviceName = (TextView) findViewById(R.id.deviceName);
+        TextView deviceName = (TextView) findViewById(R.id.childName);
         String name = getIntent().getStringExtra("id_device");
         deviceName.setText(name);
     }
