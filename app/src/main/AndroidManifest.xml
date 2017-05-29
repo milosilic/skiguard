@@ -45,6 +45,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bitgear.skiguard.skiguard.NavigationDrawer" />
         </activity>
+        <activity
+            android:name=".DeviceDetailsActivity"
+            android:label="@string/title_activity_device_details"
+            android:parentActivityName=".DevicesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bitgear.skiguard.skiguard.DevicesActivity" />
+        </activity>
     </application>
 
 </manifest>

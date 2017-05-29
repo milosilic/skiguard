@@ -87,4 +87,5 @@
         <item>Teodora</item>
         <item>Dragana</item>
     </string-array>
+    <string name="title_activity_device_details">DeviceDetailsActivity</string>
 </resources>

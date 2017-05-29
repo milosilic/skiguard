@@ -1,5 +1,6 @@
 package com.bitgear.skiguard.skiguard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -75,6 +77,7 @@ public class DevicesActivity extends NavigationDrawer  {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mRecyclerView = (ListView) findViewById(R.id.eventListView);
         setupAdapter();
+        setupItemListener();
 
 
         mSwipeRefreshLayout.setColorSchemeColors(R.color.colorAccent, R.color.colorPrimary);
@@ -99,6 +102,22 @@ public class DevicesActivity extends NavigationDrawer  {
     private void setupAdapter() {
         mCatNamesRecyclerViewAdapter = new DeviceListAdapter(this);
         mRecyclerView.setAdapter(mCatNamesRecyclerViewAdapter);
+    }
+
+    private void setupItemListener(){
+        if ( mRecyclerView != null){
+            mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(DevicesActivity.this, DeviceDetailsActivity.class);
+
+                    Logger.d( mCatNamesRecyclerViewAdapter.getItem(position));
+                    intent.putExtra("id_device", (String) mCatNamesRecyclerViewAdapter.getItem(position));
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
 
