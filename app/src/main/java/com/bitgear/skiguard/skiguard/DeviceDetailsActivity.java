@@ -12,7 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bitgear.skiguard.skiguard.adapter.AlbumsAdapter;
+import com.bitgear.skiguard.skiguard.adapter.DeviceCardsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class DeviceDetailsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private AlbumsAdapter adapter;
+    private DeviceCardsAdapter adapter;
     private List<Album> albumList;
 
 
@@ -41,7 +41,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
-        adapter = new AlbumsAdapter(this, albumList);
+        adapter = new DeviceCardsAdapter(this, albumList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -57,18 +57,15 @@ public class DeviceDetailsActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() {
-        int[] covers = new int[]{
-                R.drawable.ic_menu_camera,
-                R.drawable.ic_menu_device,
-                R.drawable.ic_menu_gallery};
 
-        Album a = new Album("Pancicev vrh", 13, covers[0]);
+        Album a = new Album("Location","Pancicev vrh");
         albumList.add(a);
 
-        a = new Album("50%", 8, covers[1]);
+        a = new Album("Battery", "50%");
         albumList.add(a);
 
-        a = new Album("3 minutes ago", 11, covers[2]);
+        a = new Album("Last Update", "3 minutes ago");
+
         albumList.add(a);
 
         adapter.notifyDataSetChanged();

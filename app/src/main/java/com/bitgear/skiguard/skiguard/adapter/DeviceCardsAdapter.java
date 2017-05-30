@@ -14,31 +14,32 @@ import android.widget.Toast;
 
 import com.bitgear.skiguard.skiguard.Album;
 import com.bitgear.skiguard.skiguard.R;
-import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 /**
  * Created by Ravi Tamada on 18/05/16.
  */
-public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
+public class DeviceCardsAdapter extends RecyclerView.Adapter<DeviceCardsAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Album> albumList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView thumbnail;
+        public TextView thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            thumbnail = (TextView) view.findViewById(R.id.thumbnail);
         }
     }
 
 
-    public AlbumsAdapter(Context mContext, List<Album> albumList) {
+    public DeviceCardsAdapter(Context mContext, List<Album> albumList) {
         this.mContext = mContext;
         this.albumList = albumList;
     }
@@ -55,10 +56,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Album album = albumList.get(position);
         holder.title.setText(album.getName());
+        holder.title.setBackgroundColor(R.color.colorOrange);
+        holder.thumbnail.setText(album.getThumbnail());
 
+        /*
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
-
+*/
     }
 
     /**
