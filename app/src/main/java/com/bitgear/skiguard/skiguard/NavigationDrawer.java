@@ -61,8 +61,7 @@ public class NavigationDrawer extends AppCompatActivity
         Database db = helper.getWritableDb();
         DaoSession daoSession = new DaoMaster(db).newSession();
 
-        insertSampleData(daoSession);
-
+       // insertSampleData(daoSession);
 
         setupToolbar();
 
