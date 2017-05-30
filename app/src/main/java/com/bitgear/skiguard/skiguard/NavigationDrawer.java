@@ -3,9 +3,8 @@ package com.bitgear.skiguard.skiguard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,7 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+
+import com.bitgear.skiguard.dao.DaoMaster;
+import com.bitgear.skiguard.dao.DaoSession;
+import com.bitgear.skiguard.dao.Device;
+import com.bitgear.skiguard.dao.DeviceDao;
+import com.bitgear.skiguard.dao.History;
+import com.bitgear.skiguard.dao.HistoryDao;
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.greendao.database.Database;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +57,16 @@ public class NavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,"users-db"); //The users-db here is the name of our database.
+        Database db = helper.getWritableDb();
+        DaoSession daoSession = new DaoMaster(db).newSession();
+
+        insertSampleData(daoSession);
+
+
         setupToolbar();
+
+
     }
 
     @Override
@@ -113,5 +132,34 @@ public class NavigationDrawer extends AppCompatActivity
      */
     public void setupToolbar(){
 
+    }
+
+    public void insertSampleData(DaoSession daoSession) {
+//        User device = new User();
+//        device.setEmail("John Doe");
+//        UserDao personDao = daoSession.getUserDao();
+//        personDao.insertOrReplace(device);
+
+        History history = new History();
+        history.setBattery(234);
+        history.setId_device(1);
+        history.setId_track(1);
+        history.setId_track_change(123);
+        history.setLat((float) 5);
+        history.setLng((float) 23.32);
+
+        HistoryDao historyDao = daoSession.getHistoryDao();
+        long update = historyDao.insertOrReplace(history);
+        Logger.d(update);
+
+
+        Device device = new Device();
+        device.setColor("red");
+        device.setLast_update(history.getId());
+        device.setHistory(history);
+        device.setName("milos Ilic");
+        device.setSerial_number("303403934093409403");
+        DeviceDao deviceDao = daoSession.getDeviceDao();
+        deviceDao.insertOrReplace(device);
     }
 }

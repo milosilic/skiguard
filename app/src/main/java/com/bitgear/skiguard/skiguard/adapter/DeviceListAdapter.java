@@ -7,9 +7,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bitgear.skiguard.dao.DaoMaster;
+import com.bitgear.skiguard.dao.DaoSession;
+import com.bitgear.skiguard.dao.Device;
+import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.skiguard.R;
+import com.orhanobut.logger.Logger;
 
-import java.util.Arrays;
+import org.greenrobot.greendao.database.Database;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,11 +31,23 @@ public class DeviceListAdapter extends BaseAdapter {
 
     public DeviceListAdapter(Context context) {
         mContext = context;
-        randomizeCatNames();
+        mCatNames = new ArrayList<String>();
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,"users-db"); //The users-db here is the name of our database.
+        Database db = helper.getWritableDb();
+        DaoSession daoSession = new DaoMaster(db).newSession();
+        randomizeCatNames(daoSession);
     }
 
-    public void randomizeCatNames() {
-        mCatNames = Arrays.asList(getCatNamesResource());
+    public void randomizeCatNames(DaoSession daoSession) {
+        DeviceDao deviceDao = daoSession.getDeviceDao();
+        List<Device> userlist = deviceDao.loadAll();
+        for (Device device:userlist)
+        {
+            mCatNames.add(device.getId() + " " + device.getName() + " " +  device.getHistory().getLat() + " " +  device.getHistory().getId_track_change());
+            Logger.d(device);
+
+        }
+//        mCatNames = Arrays.asList(getCatNamesResource());
         Collections.shuffle(mCatNames);
     }
 
