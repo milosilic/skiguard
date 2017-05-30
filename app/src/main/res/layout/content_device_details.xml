@@ -54,11 +54,20 @@
             android:background="@color/colorAccent"
             android:paddingLeft="3dp"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:layout_below="@+id/expiresOn"
+            android:scrollbars="horizontal" />
+
+
         <fragment
             android:id="@+id/eventMap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/expiresOn"
+            android:layout_below="@+id/recycler_view"
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
 

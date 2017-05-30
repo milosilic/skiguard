@@ -60,7 +60,7 @@ public class DeviceListAdapter extends BaseAdapter {
         // inflate the layout for each list row
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).
-                    inflate(R.layout.layout_list_view_row_items, parent, false);
+                    inflate(R.layout.device_list_row, parent, false);
         }
 
         // get current item to be displayed
@@ -70,7 +70,7 @@ public class DeviceListAdapter extends BaseAdapter {
         TextView textViewItemName = (TextView)
                 convertView.findViewById(R.id.text_view_item_name);
         TextView textViewItemDescription = (TextView)
-                convertView.findViewById(R.id.text_view_item_description);
+                convertView.findViewById(R.id.textLastSeenAgo);
 
         //sets the text for item name and item description from the current item object
         textViewItemName.setText(currentItem);
