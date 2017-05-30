@@ -10,11 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bitgear.skiguard.skiguard.adapter.AlbumsAdapter;
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +43,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         albumList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, albumList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
         prepareAlbums();
-
-        try {
-            Glide.with(this).load(R.drawable.ic_menu_send).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -70,13 +62,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
                 R.drawable.ic_menu_device,
                 R.drawable.ic_menu_gallery};
 
-        Album a = new Album("True Romance", 13, covers[0]);
+        Album a = new Album("Pancicev vrh", 13, covers[0]);
         albumList.add(a);
 
-        a = new Album("Xscpae", 8, covers[1]);
+        a = new Album("50%", 8, covers[1]);
         albumList.add(a);
 
-        a = new Album("Maroon 5", 11, covers[2]);
+        a = new Album("3 minutes ago", 11, covers[2]);
         albumList.add(a);
 
         adapter.notifyDataSetChanged();
