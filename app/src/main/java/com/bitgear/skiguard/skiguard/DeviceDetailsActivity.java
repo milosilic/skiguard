@@ -1,5 +1,6 @@
 package com.bitgear.skiguard.skiguard;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -52,6 +53,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         prepareAlbums();
 
     }
+
+    public void deviceSetupClick(View view) {
+        Intent intent = new Intent(this, DeviceSetupActivity.class);
+        intent.putExtra("id_device", getIntent().getStringExtra("id_device"));
+        startActivity(intent);
+    }
+
 
     /**
      * Adding few albums for testing

@@ -12,7 +12,6 @@ import com.bitgear.skiguard.dao.DaoSession;
 import com.bitgear.skiguard.dao.Device;
 import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.skiguard.R;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -43,11 +42,11 @@ public class DeviceListAdapter extends BaseAdapter {
         List<Device> userlist = deviceDao.loadAll();
         for (Device device:userlist)
         {
-            Logger.d(device);
+     //       Logger.d(device);
             String fromHistory = device.getHistory()== null ? "":  device.getHistory().getLat() + " " +  device.getHistory().getId_track_change();
 
             mCatNames.add(device.getId() + " " + device.getName() + " " +  fromHistory);
-            Logger.d(device);
+//            Logger.d(device);
 
         }
 //        mCatNames = Arrays.asList(getCatNamesResource());

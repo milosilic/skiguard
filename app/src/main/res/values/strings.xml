@@ -110,6 +110,7 @@
     </string>
     <string name="token">Token</string>
     <string name="phone">Telephone nr.</string>
+    <string name="title_activity_device_setup">Device Setup</string>
 
 
 </resources>
