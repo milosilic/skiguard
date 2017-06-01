@@ -45,14 +45,11 @@ public class DeviceSetupActivity extends AppCompatActivity implements PisteFragm
 
                 switch (tab.getPosition()) {
                     case 0:
-                        showToast("One");
+                        showToast("PISTES");
 
                         break;
                     case 1:
-                        showToast("Two");
-                        break;
-                    case 2:
-                        showToast("Three");
+                        showToast("LIFTS");
                         break;
                 }
             }
