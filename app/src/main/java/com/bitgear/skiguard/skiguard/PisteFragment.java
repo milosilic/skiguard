@@ -55,7 +55,7 @@ public class PisteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View viewFragment = inflater.inflate(R.layout.fragment_device_setup, container, false);
-        View view = null;viewFragment.findViewById(R.id.listOfTracks);
+        View view = viewFragment.findViewById(R.id.listOfTracks);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -68,7 +68,7 @@ public class PisteFragment extends Fragment {
             }
             recyclerView.setAdapter(new MyPisteRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
-        return view;
+        return viewFragment;
     }
 
 
