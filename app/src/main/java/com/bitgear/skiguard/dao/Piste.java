@@ -103,6 +103,11 @@ public class Piste {
         String arrayString = new Gson().toJson(category);
         this.category = arrayString;
     }
+
+    public void setBoundaryList(@NotNull List<String> boundaryList) {
+        String arrayString = new Gson().toJson(boundaryList);
+        this.boundary = arrayString;
+    }
     // KEEP METHODS END
 
 }

@@ -21,6 +21,8 @@ import com.bitgear.skiguard.dao.Device;
 import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.dao.History;
 import com.bitgear.skiguard.dao.HistoryDao;
+import com.bitgear.skiguard.dao.Lift;
+import com.bitgear.skiguard.dao.LiftDao;
 import com.bitgear.skiguard.dao.Piste;
 import com.bitgear.skiguard.dao.PisteDao;
 import com.orhanobut.logger.Logger;
@@ -151,10 +153,23 @@ public class NavigationDrawer extends AppCompatActivity
         categoryList.add("#5CA3E2");
 
         piste.setCategoryList(categoryList);
+        //promeniti naravno, treba da bude lista koordinata
+        piste.setBoundaryList(categoryList);
 
         PisteDao trackDao = daoSession.getPisteDao();
         long trackId = trackDao.insertOrReplace(piste);
-Logger.d("track: " + trackId);
+        Logger.d("track: " + trackId);
+
+        Lift lift = new Lift();
+        lift.setName("Zica Pancic");
+        LiftDao liftDao = daoSession.getLiftDao();
+        ArrayList<String> boundaryList = new ArrayList<String>();
+        lift.setBoundaryList(boundaryList);
+
+
+        long liftId = liftDao.insertOrReplace(lift);
+        Logger.d("lift: " + liftId);
+
         History history = new History();
         history.setBattery(234);
         history.setId_device(1);

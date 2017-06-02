@@ -3,6 +3,8 @@ package com.bitgear.skiguard.skiguard;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,8 @@ import android.view.ViewGroup;
 
 import com.bitgear.skiguard.dao.DaoMaster;
 import com.bitgear.skiguard.dao.DaoSession;
-import com.bitgear.skiguard.dao.Piste;
-import com.bitgear.skiguard.dao.PisteDao;
+import com.bitgear.skiguard.dao.Lift;
+import com.bitgear.skiguard.dao.LiftDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -23,7 +25,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PisteFragment extends Fragment {
+public class LiftFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -35,13 +37,13 @@ public class PisteFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PisteFragment() {
+    public LiftFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PisteFragment newInstance(int columnCount) {
-        PisteFragment fragment = new PisteFragment();
+    public static LiftFragment newInstance(int columnCount) {
+        LiftFragment fragment = new LiftFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -60,27 +62,27 @@ public class PisteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viewFragment = inflater.inflate(R.layout.fragment_device_setup, container, false);
-        View view = viewFragment.findViewById(R.id.listOfTracks);
+        View view = inflater.inflate(R.layout.fragment_lift_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                //recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                //recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             //@TODO dao
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(getContext(),"users-db"); //The users-db here is the name of our database.
             Database db = helper.getWritableDb();
             DaoSession daoSession = new DaoMaster(db).newSession();
-            PisteDao pisteDao = daoSession.getPisteDao();
-            List<Piste> userlist = pisteDao.loadAll();
-            recyclerView.setAdapter(new MyPisteRecyclerViewAdapter(userlist, mListener));
+            LiftDao liftDao = daoSession.getLiftDao();
+            List<Lift> liftList =  liftDao.loadAll();
+
+            recyclerView.setAdapter(new MyLiftRecyclerViewAdapter(liftList, mListener));
         }
-        return viewFragment;
+        return view;
     }
 
 
@@ -113,6 +115,6 @@ public class PisteFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Piste item);
+        void onListFragmentInteraction(Lift item);
     }
 }
