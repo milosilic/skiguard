@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bitgear.skiguard.dao.Lift;
-import com.bitgear.skiguard.skiguard.LiftFragment.OnListFragmentInteractionListener;
+import com.bitgear.skiguard.skiguard.LiftFragment.OnLiftListFragmentInteractionListener;
 
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Lift} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnLiftListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyLiftRecyclerViewAdapter extends RecyclerView.Adapter<MyLiftRecyclerViewAdapter.ViewHolder> {
 
     private final List<Lift> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnLiftListFragmentInteractionListener mListener;
 
-    public MyLiftRecyclerViewAdapter(List<Lift> items, OnListFragmentInteractionListener listener) {
+    public MyLiftRecyclerViewAdapter(List<Lift> items, LiftFragment.OnLiftListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

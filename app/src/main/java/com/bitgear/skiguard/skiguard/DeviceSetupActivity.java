@@ -10,10 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bitgear.skiguard.dao.Lift;
 import com.bitgear.skiguard.dao.Piste;
 import com.bitgear.skiguard.skiguard.adapter.SkiTracksPagerAdapter;
 
-public class DeviceSetupActivity extends AppCompatActivity implements PisteFragment.OnListFragmentInteractionListener {
+public class DeviceSetupActivity extends AppCompatActivity implements PisteFragment.OnListFragmentInteractionListener, LiftFragment.OnLiftListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +78,17 @@ public class DeviceSetupActivity extends AppCompatActivity implements PisteFragm
     private void setupViewPager(ViewPager viewPager) {
         SkiTracksPagerAdapter adapter = new SkiTracksPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(PisteFragment.newInstance(1),"PISTES");
-        adapter.addFrag(PisteFragment.newInstance(1),"LIFTS");
+        adapter.addFrag(LiftFragment.newInstance(1),"LIFTS");
         viewPager.setAdapter(adapter);
     }
 
     @Override
     public void onListFragmentInteraction(Piste item) {
         Toast.makeText(this, "Kreirao piste", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Lift item) {
+        Toast.makeText(this, "Kreirao zice", Toast.LENGTH_SHORT).show();
     }
 }
