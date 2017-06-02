@@ -30,7 +30,7 @@ public class MyGenerator {
     }
 
     private static void addLiftEntities(Schema schema) {
-        Entity track = schema.addEntity("Piste");
+        Entity track = schema.addEntity("Lift");
         track.addIdProperty().primaryKey().autoincrement();
         track.addStringProperty("name").notNull();
         track.addStringProperty("boundary").notNull();//ArrayList<Coordinate>
@@ -42,7 +42,7 @@ public class MyGenerator {
         track.addStringProperty("name").notNull();
         track.addStringProperty("category").notNull();//ArrayList<String>
         track.addStringProperty("boundary").notNull();//ArrayList<Coordinate>
-        
+
         return track;
 
 
