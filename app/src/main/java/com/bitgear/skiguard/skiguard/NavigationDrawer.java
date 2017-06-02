@@ -21,9 +21,13 @@ import com.bitgear.skiguard.dao.Device;
 import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.dao.History;
 import com.bitgear.skiguard.dao.HistoryDao;
+import com.bitgear.skiguard.dao.Piste;
+import com.bitgear.skiguard.dao.PisteDao;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.greendao.database.Database;
+
+import java.util.ArrayList;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,7 +65,7 @@ public class NavigationDrawer extends AppCompatActivity
         Database db = helper.getWritableDb();
         DaoSession daoSession = new DaoMaster(db).newSession();
 
-       // insertSampleData(daoSession);
+        insertSampleData(daoSession);
 
         setupToolbar();
 
@@ -139,6 +143,18 @@ public class NavigationDrawer extends AppCompatActivity
 //        UserDao personDao = daoSession.getUserDao();
 //        personDao.insertOrReplace(device);
 
+        Piste piste  = new Piste();
+        //track.setId(1L);
+        piste.setName("Karaman grebena vrh");
+        ArrayList<String> categoryList = new ArrayList<String>();
+        categoryList.add("#EC2C2C");
+        categoryList.add("#5CA3E2");
+
+        piste.setCategoryList(categoryList);
+
+        PisteDao trackDao = daoSession.getPisteDao();
+        long trackId = trackDao.insertOrReplace(piste);
+Logger.d("track: " + trackId);
         History history = new History();
         history.setBattery(234);
         history.setId_device(1);

@@ -8,8 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bitgear.skiguard.skiguard.dummy.DummyContent;
-import com.bitgear.skiguard.skiguard.dummy.DummyContent.DummyItem;
+import com.bitgear.skiguard.dao.DaoMaster;
+import com.bitgear.skiguard.dao.DaoSession;
+import com.bitgear.skiguard.dao.Piste;
+import com.bitgear.skiguard.dao.PisteDao;
+
+import org.greenrobot.greendao.database.Database;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -66,7 +72,12 @@ public class PisteFragment extends Fragment {
             } else {
                 //recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyPisteRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(getContext(),"users-db"); //The users-db here is the name of our database.
+            Database db = helper.getWritableDb();
+            DaoSession daoSession = new DaoMaster(db).newSession();
+            PisteDao pisteDao = daoSession.getPisteDao();
+            List<Piste> userlist = pisteDao.loadAll();
+            recyclerView.setAdapter(new MyPisteRecyclerViewAdapter(userlist, mListener));
         }
         return viewFragment;
     }
@@ -101,6 +112,6 @@ public class PisteFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Piste item);
     }
 }

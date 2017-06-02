@@ -10,8 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bitgear.skiguard.dao.Piste;
 import com.bitgear.skiguard.skiguard.adapter.SkiTracksPagerAdapter;
-import com.bitgear.skiguard.skiguard.dummy.DummyContent;
 
 public class DeviceSetupActivity extends AppCompatActivity implements PisteFragment.OnListFragmentInteractionListener {
 
@@ -82,7 +82,7 @@ public class DeviceSetupActivity extends AppCompatActivity implements PisteFragm
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Piste item) {
         Toast.makeText(this, "Kreirao piste", Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,6 +5,7 @@ import org.greenrobot.greendao.generator.Entity;
 import org.greenrobot.greendao.generator.Property;
 import org.greenrobot.greendao.generator.Schema;
 
+
 public class MyGenerator {
     public static void main(String[] args) {
         Schema schema = new Schema(1, "com.bitgear.skiguard.dao"); // Your app package name and the (.db) is the folder where the DAO files will be generated into.
@@ -22,8 +23,29 @@ public class MyGenerator {
     private static void addTables(final Schema schema) {
         addUserEntities(schema);
         addDeviceEntities(schema);
+        addPisteEntities(schema);
+        addLiftEntities(schema);
 
         // addPhonesEntities(schema);
+    }
+
+    private static void addLiftEntities(Schema schema) {
+        Entity track = schema.addEntity("Piste");
+        track.addIdProperty().primaryKey().autoincrement();
+        track.addStringProperty("name").notNull();
+        track.addStringProperty("boundary").notNull();//ArrayList<Coordinate>
+    }
+
+    private static Entity addPisteEntities(Schema schema) {
+        Entity track = schema.addEntity("Piste");
+        track.addIdProperty().primaryKey().autoincrement();
+        track.addStringProperty("name").notNull();
+        track.addStringProperty("category").notNull();//ArrayList<String>
+        track.addStringProperty("boundary").notNull();//ArrayList<Coordinate>
+        
+        return track;
+
+
     }
 
     // This is use to describe the colums of your table

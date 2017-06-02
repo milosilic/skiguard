@@ -22,13 +22,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listOfTracks"
         android:name="com.bitgear.skiguard.skiguard.PisteFragment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
         android:background="@drawable/side_nav_bar"
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager"
@@ -37,6 +36,29 @@
         app:layout_constraintTop_toBottomOf="@+id/checkBox"
         tools:context="com.bitgear.skiguard.skiguard.PisteFragment"
         tools:listitem="@layout/fragment_piste" />
+
+    <CheckBox
+        android:id="@+id/checkBox6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorAllRed"
+        android:text="All Red"
+        app:layout_constraintLeft_toRightOf="@+id/checkBox"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorBlack"
+        android:text="All Red"
+        app:layout_constraintLeft_toRightOf="@+id/checkBox6"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
