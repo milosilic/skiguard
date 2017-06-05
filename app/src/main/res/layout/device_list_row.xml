@@ -23,9 +23,9 @@
 
             <ImageView
                 android:id="@+id/imageView6"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_weight="0"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
                 app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
             <TextView
@@ -33,9 +33,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="@color/colorAllRed"
                 android:layout_weight="1"
+                android:background="@color/colorAllRed"
+
+                android:lines="1"
                 android:text="Pancicev vrh" />
+            <TextView
+                android:id="@+id/text_track_nme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@color/colorAllBlue"
+                android:layout_weight="0"
+                android:lines="1"
+                android:text="" />
+
         </LinearLayout>
 
     </LinearLayout>
