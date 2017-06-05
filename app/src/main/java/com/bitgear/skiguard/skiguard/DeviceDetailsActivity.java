@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitgear.skiguard.skiguard.adapter.DeviceCardsAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class DeviceDetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DeviceCardsAdapter adapter;
     private List<Album> albumList;
-
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,13 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView deviceName = (TextView) findViewById(R.id.childName);
-        String name = getIntent().getStringExtra("id_device");
+
+
+        if ( savedInstanceState == null) {
+            name = getIntent().getStringExtra("id_device");
+        }else {
+            name = savedInstanceState.getString("id_device");
+        }
         deviceName.setText(name);
 
         ///
@@ -52,6 +60,25 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
         prepareAlbums();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Logger.d("ode u stop");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString("id_device", name);
+        Logger.d("ode u onSave");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Logger.d("ode u onRestore");
     }
 
     public void deviceSetupClick(View view) {
