@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.bitgear.skiguard.dao.Device;
 import com.bitgear.skiguard.skiguard.adapter.DeviceListAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -113,7 +114,7 @@ public class DevicesActivity extends NavigationDrawer  {
                     Intent intent = new Intent(DevicesActivity.this, DeviceDetailsActivity.class);
 
                     Logger.d( mCatNamesRecyclerViewAdapter.getItem(position));
-                    intent.putExtra("id_device", (String) mCatNamesRecyclerViewAdapter.getItem(position));
+                    intent.putExtra("id_device", (String) ((Device)mCatNamesRecyclerViewAdapter.getItem(position)).getId().toString());
                     startActivity(intent);
                 }
             });

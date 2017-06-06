@@ -21,9 +21,11 @@ public class MyGenerator {
     }
 
     private static void addTables(final Schema schema) {
+        final Entity piste = addPisteEntities(schema);
+
         addUserEntities(schema);
-        addDeviceEntities(schema);
-        addPisteEntities(schema);
+        addDeviceEntities(schema, piste);
+
         addLiftEntities(schema);
 
         // addPhonesEntities(schema);
@@ -59,15 +61,16 @@ public class MyGenerator {
         return user;
     }
 
-    private static Entity addDeviceEntities(final Schema schema) {
+    private static Entity addDeviceEntities(final Schema schema, Entity piste) {
         Entity history = schema.addEntity("History");
         history.addIdProperty().primaryKey().autoincrement();
         history.addIntProperty("id_device").notNull();
         history.addFloatProperty("lat").notNull();
         history.addFloatProperty("lng").notNull();
         history.addIntProperty("battery").notNull();
-        history.addIntProperty("id_track").notNull();
-        history.addIntProperty("id_track_change").notNull().unique();
+        history.addIntProperty("id_track_change").notNull();
+        Property pisteProperty = history.addLongProperty("last_piste").getProperty();
+        history.addToOne(piste, pisteProperty);
 
         Entity device = schema.addEntity("Device");
         device.addIdProperty().primaryKey().autoincrement();

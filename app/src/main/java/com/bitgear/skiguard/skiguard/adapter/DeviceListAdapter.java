@@ -26,11 +26,11 @@ import java.util.List;
 public class DeviceListAdapter extends BaseAdapter {
 
     private Context mContext;
-    List<String> mCatNames;
+    List<Device> mCatNames;
 
     public DeviceListAdapter(Context context) {
         mContext = context;
-        mCatNames = new ArrayList<String>();
+        mCatNames = new ArrayList<Device>();
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context,"users-db"); //The users-db here is the name of our database.
         Database db = helper.getWritableDb();
         DaoSession daoSession = new DaoMaster(db).newSession();
@@ -45,7 +45,7 @@ public class DeviceListAdapter extends BaseAdapter {
      //       Logger.d(device);
             String fromHistory = device.getHistory()== null ? "":  device.getHistory().getLat() + " " +  device.getHistory().getId_track_change();
 
-            mCatNames.add(device.getId() + " " + device.getName() + " " +  fromHistory);
+            mCatNames.add( device);
 //            Logger.d(device);
 
         }
@@ -85,17 +85,21 @@ public class DeviceListAdapter extends BaseAdapter {
         }
 
         // get current item to be displayed
-        String currentItem = (String) getItem(position);
+        Device currentDevice = (Device) getItem(position);
 
         // get the TextView for item name and item description
         TextView textViewItemName = (TextView)
                 convertView.findViewById(R.id.text_view_item_name);
         TextView textViewItemDescription = (TextView)
                 convertView.findViewById(R.id.textLastSeenAgo);
+        TextView textTrackName = (TextView)
+                convertView.findViewById(R.id.text_track_name);
+
 
         //sets the text for item name and item description from the current item object
-        textViewItemName.setText(currentItem);
-        textViewItemDescription.setText(currentItem + " " + currentItem);
+        textViewItemName.setText(currentDevice.getName());
+        textViewItemDescription.setText(currentDevice.getLast_update().toString() +  " mins ago");
+        textTrackName.setText(currentDevice.getHistory().getPiste().getName());
 
         // returns the view for the current row
         return convertView;

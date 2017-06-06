@@ -30,11 +30,19 @@ import com.orhanobut.logger.Logger;
 import org.greenrobot.greendao.database.Database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public FrameLayout frameLayout;
+    private static String[] devices = {"Milos Ilic", "Teodora Ilc", "Irina Ilic"};
+    private static String[] sn = {"3043049334", "5656565644", "7878787878"};
+    private static String[] device_color = {"#EC2C2C", "#5CA3E2", "#EC2C2C"};
+    private static String[] pisteName = {"Karaman greben", "Pancicev vrh", "Masinac"};
+    private static String[] zica = {"Zica Pancic", "Zica Krst", "Zica Gvozdac"};
+    private static int[] id_track_change = {100, 200, 300};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +75,21 @@ public class NavigationDrawer extends AppCompatActivity
         Database db = helper.getWritableDb();
         DaoSession daoSession = new DaoMaster(db).newSession();
 
-        insertSampleData(daoSession);
+        if ( isSqliteEmpty(daoSession)){
+            for (int i = 0; i< devices.length;i++){
+                insertSampleData(daoSession, i);
+            }
+        }
 
         setupToolbar();
 
 
+    }
+
+    private boolean isSqliteEmpty(DaoSession daoSession) {
+        DeviceDao deviceDao = daoSession.getDeviceDao();
+        List<Device> listDevice = deviceDao.loadAll();
+        return listDevice.size() == 0;
     }
 
     @Override
@@ -139,7 +157,7 @@ public class NavigationDrawer extends AppCompatActivity
 
     }
 
-    public void insertSampleData(DaoSession daoSession) {
+    public void insertSampleData(DaoSession daoSession, Integer id ) {
 //        User device = new User();
 //        device.setEmail("John Doe");
 //        UserDao personDao = daoSession.getUserDao();
@@ -147,7 +165,7 @@ public class NavigationDrawer extends AppCompatActivity
 
         Piste piste  = new Piste();
         //track.setId(1L);
-        piste.setName("Karaman grebena vrh");
+        piste.setName(pisteName[id]);
         ArrayList<String> categoryList = new ArrayList<String>();
         categoryList.add("#EC2C2C");
         categoryList.add("#5CA3E2");
@@ -161,7 +179,7 @@ public class NavigationDrawer extends AppCompatActivity
         Logger.d("track: " + trackId);
 
         Lift lift = new Lift();
-        lift.setName("Zica Pancic");
+        lift.setName(zica[id]);
         LiftDao liftDao = daoSession.getLiftDao();
         ArrayList<String> boundaryList = new ArrayList<String>();
         lift.setBoundaryList(boundaryList);
@@ -173,8 +191,8 @@ public class NavigationDrawer extends AppCompatActivity
         History history = new History();
         history.setBattery(234);
         history.setId_device(1);
-        history.setId_track(1);
-        history.setId_track_change(123);
+        history.setId_track_change(id_track_change[id]);
+        history.setPiste(piste);
         history.setLat((float) 5);
         history.setLng((float) 23.32);
 
@@ -184,11 +202,11 @@ public class NavigationDrawer extends AppCompatActivity
 
 
         Device device = new Device();
-        device.setColor("red");
+        device.setColor(device_color[id]);
         device.setLast_update(history.getId());
         device.setHistory(history);
-        device.setName("milos Ilic");
-        device.setSerial_number("303403934093409403");
+        device.setName(devices[id]);
+        device.setSerial_number(sn[id]);
         DeviceDao deviceDao = daoSession.getDeviceDao();
         deviceDao.insertOrReplace(device);
     }

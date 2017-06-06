@@ -1,10 +1,13 @@
 package com.bitgear.skiguard.dao;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.internal.SqlUtils;
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
@@ -27,9 +30,11 @@ public class HistoryDao extends AbstractDao<History, Long> {
         public final static Property Lat = new Property(2, float.class, "lat", false, "LAT");
         public final static Property Lng = new Property(3, float.class, "lng", false, "LNG");
         public final static Property Battery = new Property(4, int.class, "battery", false, "BATTERY");
-        public final static Property Id_track = new Property(5, int.class, "id_track", false, "ID_TRACK");
-        public final static Property Id_track_change = new Property(6, int.class, "id_track_change", false, "ID_TRACK_CHANGE");
+        public final static Property Id_track_change = new Property(5, int.class, "id_track_change", false, "ID_TRACK_CHANGE");
+        public final static Property Last_piste = new Property(6, Long.class, "last_piste", false, "LAST_PISTE");
     }
+
+    private DaoSession daoSession;
 
 
     public HistoryDao(DaoConfig config) {
@@ -38,6 +43,7 @@ public class HistoryDao extends AbstractDao<History, Long> {
     
     public HistoryDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -49,8 +55,8 @@ public class HistoryDao extends AbstractDao<History, Long> {
                 "\"LAT\" REAL NOT NULL ," + // 2: lat
                 "\"LNG\" REAL NOT NULL ," + // 3: lng
                 "\"BATTERY\" INTEGER NOT NULL ," + // 4: battery
-                "\"ID_TRACK\" INTEGER NOT NULL ," + // 5: id_track
-                "\"ID_TRACK_CHANGE\" INTEGER NOT NULL UNIQUE );"); // 6: id_track_change
+                "\"ID_TRACK_CHANGE\" INTEGER NOT NULL ," + // 5: id_track_change
+                "\"LAST_PISTE\" INTEGER);"); // 6: last_piste
     }
 
     /** Drops the underlying database table. */
@@ -71,8 +77,12 @@ public class HistoryDao extends AbstractDao<History, Long> {
         stmt.bindDouble(3, entity.getLat());
         stmt.bindDouble(4, entity.getLng());
         stmt.bindLong(5, entity.getBattery());
-        stmt.bindLong(6, entity.getId_track());
-        stmt.bindLong(7, entity.getId_track_change());
+        stmt.bindLong(6, entity.getId_track_change());
+ 
+        Long last_piste = entity.getLast_piste();
+        if (last_piste != null) {
+            stmt.bindLong(7, last_piste);
+        }
     }
 
     @Override
@@ -87,8 +97,18 @@ public class HistoryDao extends AbstractDao<History, Long> {
         stmt.bindDouble(3, entity.getLat());
         stmt.bindDouble(4, entity.getLng());
         stmt.bindLong(5, entity.getBattery());
-        stmt.bindLong(6, entity.getId_track());
-        stmt.bindLong(7, entity.getId_track_change());
+        stmt.bindLong(6, entity.getId_track_change());
+ 
+        Long last_piste = entity.getLast_piste();
+        if (last_piste != null) {
+            stmt.bindLong(7, last_piste);
+        }
+    }
+
+    @Override
+    protected final void attachEntity(History entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     @Override
@@ -104,8 +124,8 @@ public class HistoryDao extends AbstractDao<History, Long> {
             cursor.getFloat(offset + 2), // lat
             cursor.getFloat(offset + 3), // lng
             cursor.getInt(offset + 4), // battery
-            cursor.getInt(offset + 5), // id_track
-            cursor.getInt(offset + 6) // id_track_change
+            cursor.getInt(offset + 5), // id_track_change
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // last_piste
         );
         return entity;
     }
@@ -117,8 +137,8 @@ public class HistoryDao extends AbstractDao<History, Long> {
         entity.setLat(cursor.getFloat(offset + 2));
         entity.setLng(cursor.getFloat(offset + 3));
         entity.setBattery(cursor.getInt(offset + 4));
-        entity.setId_track(cursor.getInt(offset + 5));
-        entity.setId_track_change(cursor.getInt(offset + 6));
+        entity.setId_track_change(cursor.getInt(offset + 5));
+        entity.setLast_piste(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
      }
     
     @Override
@@ -146,4 +166,95 @@ public class HistoryDao extends AbstractDao<History, Long> {
         return true;
     }
     
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getPisteDao().getAllColumns());
+            builder.append(" FROM HISTORY T");
+            builder.append(" LEFT JOIN PISTE T0 ON T.\"LAST_PISTE\"=T0.\"_id\"");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected History loadCurrentDeep(Cursor cursor, boolean lock) {
+        History entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        Piste piste = loadCurrentOther(daoSession.getPisteDao(), cursor, offset);
+        entity.setPiste(piste);
+
+        return entity;    
+    }
+
+    public History loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<History> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<History> list = new ArrayList<History>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<History> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<History> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }
