@@ -14,8 +14,14 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bitgear.skiguard.dao.DaoMaster;
+import com.bitgear.skiguard.dao.DaoSession;
+import com.bitgear.skiguard.dao.Device;
+import com.bitgear.skiguard.dao.DeviceDao;
 import com.bitgear.skiguard.skiguard.adapter.DeviceCardsAdapter;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.greendao.database.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +42,6 @@ public class DeviceDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView deviceName = (TextView) findViewById(R.id.childName);
 
 
         if ( savedInstanceState == null) {
@@ -44,7 +49,6 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         }else {
             name = savedInstanceState.getString("id_device");
         }
-        deviceName.setText(name);
 
         ///
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -59,6 +63,42 @@ public class DeviceDetailsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         prepareAlbums();
+
+        /// DeviceDetails populateScreen
+
+        populateScreen(name);
+
+    }
+
+    private void populateScreen(String name) {
+
+        Device device = null;
+        if ( name != null ) {
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "users-db"); //The users-db here is the name of our database.
+            Database db = helper.getWritableDb();
+            DaoSession daoSession = new DaoMaster(db).newSession();
+            DeviceDao deviceDao = daoSession.getDeviceDao();
+            List<Device> listDevice = deviceDao.queryBuilder().where(DeviceDao.Properties.Id.eq(Integer.parseInt(name))).list();
+            device = listDevice.get(0);
+
+        }
+
+        if ( device != null){
+            TextView deviceName = (TextView) findViewById(R.id.childName);
+            if ( deviceName != null){
+                deviceName.setText(device.getName());
+            }
+            TextView serialNumberTextView = (TextView) findViewById(R.id.serialNumberTextView);
+            if ( serialNumberTextView != null){
+                serialNumberTextView.setText(device.getSerial_number());
+            }
+            TextView expiresOnTextView = (TextView) findViewById(R.id.expiresOn);
+            if ( expiresOnTextView != null){
+                expiresOnTextView.setText(device.getLast_update().toString());
+            }
+
+        }
+
 
     }
 
